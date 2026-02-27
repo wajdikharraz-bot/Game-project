@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { useStore } from '../store';
 import { LegoGeometry } from './LegoGeometry';
 import { PIECE_CONFIGS, BRICK_HEIGHT, PLATE_HEIGHT } from './PieceConfigs';
+import { playSnapSound, playThudSound } from '../utils/audio';
 
 export const GhostPiece = () => {
     const activePiece = useStore((state) => state.activePiece);
@@ -141,7 +142,13 @@ export const GhostPiece = () => {
                 color: activeColor
             });
 
-            // Attempt to play a subtle placement sound here if we had one
+            // Play the appropriate physics sound
+            // 0.2 is the baseplate height. Anything slightly higher means we stacked on a brick.
+            if (position[1] <= 0.25) {
+                playThudSound();
+            } else {
+                playSnapSound();
+            }
         };
 
         window.addEventListener('mouseup', handleMouseUp);
