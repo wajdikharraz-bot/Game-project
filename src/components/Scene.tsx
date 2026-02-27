@@ -40,8 +40,8 @@ export const Scene = () => {
 
                 <OrbitControls
                     makeDefault
-                    minDistance={5}
-                    maxDistance={40}
+                    minDistance={3}
+                    maxDistance={150}
                     maxPolarAngle={Math.PI / 2 - 0.05} /* Don't allow camera to go underneath the baseplate */
                     mouseButtons={{
                         LEFT: undefined, /* Left click will be for placing blocks */
