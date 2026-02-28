@@ -128,11 +128,25 @@ export const GhostPiece = () => {
 
     // Handle Click Placement
     useEffect(() => {
+        let startPos = { x: 0, y: 0 };
+
+        const handleMouseDown = (e: MouseEvent) => {
+            if (e.button === 0) {
+                startPos = { x: e.clientX, y: e.clientY };
+            }
+        };
+
         const handleMouseUp = (e: MouseEvent) => {
             // Only place on left click, ignore if dragging over UI, or middle click
             if (e.button !== 0 || position === null || !isValid) return;
             // Prevent placing if clicking over HTML UI (glass-panel)
             if ((e.target as HTMLElement).closest('.glass-panel')) return;
+
+            // Prevent placement if the user was dragging the camera
+            const dx = e.clientX - startPos.x;
+            const dy = e.clientY - startPos.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance > 5) return;
 
             addPiece({
                 id: crypto.randomUUID(),
@@ -151,8 +165,12 @@ export const GhostPiece = () => {
             }
         };
 
+        window.addEventListener('mousedown', handleMouseDown);
         window.addEventListener('mouseup', handleMouseUp);
-        return () => window.removeEventListener('mouseup', handleMouseUp);
+        return () => {
+            window.removeEventListener('mousedown', handleMouseDown);
+            window.removeEventListener('mouseup', handleMouseUp);
+        }
     }, [position, rotationY, activePiece, activeColor, addPiece]);
 
 

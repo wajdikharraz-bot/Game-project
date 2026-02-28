@@ -43,11 +43,6 @@ export const Scene = () => {
                     minDistance={3}
                     maxDistance={150}
                     maxPolarAngle={Math.PI / 2 - 0.05} /* Don't allow camera to go underneath the baseplate */
-                    mouseButtons={{
-                        LEFT: undefined, /* Left click will be for placing blocks */
-                        MIDDLE: 2,       /* Pan with middle mouse */
-                        RIGHT: 0         /* Orbit with right mouse (THREE.MOUSE.ROTATE = 0) */
-                    }}
                 />
 
                 {/* Soft contact shadows directly under blocks on the baseplate */}
