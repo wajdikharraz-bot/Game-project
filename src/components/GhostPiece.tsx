@@ -19,6 +19,7 @@ export const GhostPiece = () => {
     const groupRef = useRef<THREE.Group>(null);
     const { pointer, camera, scene } = useThree();
     const raycaster = useRef(new THREE.Raycaster());
+    const startPosRef = useRef({ x: 0, y: 0 });
 
     // Handle Rotation Input (R key)
     useEffect(() => {
@@ -128,11 +129,9 @@ export const GhostPiece = () => {
 
     // Handle Click Placement
     useEffect(() => {
-        let startPos = { x: 0, y: 0 };
-
         const handleMouseDown = (e: MouseEvent) => {
             if (e.button === 0) {
-                startPos = { x: e.clientX, y: e.clientY };
+                startPosRef.current = { x: e.clientX, y: e.clientY };
             }
         };
 
@@ -143,8 +142,8 @@ export const GhostPiece = () => {
             if ((e.target as HTMLElement).closest('.glass-panel')) return;
 
             // Prevent placement if the user was dragging the camera
-            const dx = e.clientX - startPos.x;
-            const dy = e.clientY - startPos.y;
+            const dx = e.clientX - startPosRef.current.x;
+            const dy = e.clientY - startPosRef.current.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance > 5) return;
 
